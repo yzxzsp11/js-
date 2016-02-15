@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery弹出框</title>
+</head>
+<body>
+<input type="button" value="菜单" id="btn1"/>
+<!--弹出窗口部分代码-->
+<!--<div style="height: 200px;width: 300px;position: absolute;border: 1px solid skyblue" id="login">-->
+    <!--Username:<input type="text" />-->
+    <!--<br/>-->
+    <!--Password:<input type="password" />-->
+    <!--<input type="button" value="close" id="close" style="position: absolute;left: 100px;top:150px"/>-->
+<!--</div>-->
+
+</body>
+<script src="jquery-2.2.0.min.js"></script>
+<script>
+    $(function(){
+        $('#btn1').click(function(){
+            var oLogin=$('<div style="height: 200px;width: 300px;position: absolute;border: 1px solid skyblue" id="login">Username:<input type="text" /> <br/>Password:<input type="password" /> <input type="button" value="close" id="close" style="position: absolute;left: 100px;top:150px"/> </div>');
+            $('body').append(oLogin);
+            oLogin.css('left',($(window).width()-oLogin.outerWidth())/2);
+            oLogin.css('top',($(window).height()-oLogin.outerHeight())/2);
+
+            $('#close').click(function(){   //关闭按钮
+                oLogin.remove();
+//                $('#login').remove();
+            });
+
+        });
+
+    })
+</script>
+</html>

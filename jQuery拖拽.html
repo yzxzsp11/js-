@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery拖拽</title>
+</head>
+<body>
+<div id="div1" style="width: 200px;height: 200px;background-color: blue;position: absolute"></div>
+</body>
+<script src="jquery-2.2.0.min.js">
+</script>
+<script>
+    //原生写法
+//    window.onload=function(){
+//        move();
+//    };
+//    function move(){
+//        var oDiv1=document.getElementById('div1');
+//        var disX=0;
+//        var disY=0;
+//        oDiv1.onmousedown=function(ev){
+//            var oEvent=ev||event;
+//            disX=oEvent.clientX-oDiv1.offsetLeft;   //获得间距
+//            disY=oEvent.clientY-oDiv1.offsetTop;
+//            document.onmousemove=function(ev){
+//                var oEvent=ev||event;
+//                var x=oEvent.clientX-disX;   //计算距离边缘距离
+//                var y=oEvent.clientY-disY;
+//                if(x<20){
+//                    x=0;
+//                }
+//                else if(x>document.documentElement.clientWidth-oDiv1.offsetWidth){
+//                    x=document.documentElement.clientWidth-oDiv1.offsetWidth;
+//                }
+//                if(y<20){
+//                    y=0;
+//                }
+//                else if(y>document.documentElement.clientHeight-oDiv1.offsetHeight){
+//                    y=document.documentElement.clientHeight-oDiv1.offsetHeight;
+//                }
+//                oDiv1.style.left=x+'px';
+//                oDiv1.style.top=y+'px';
+//            };
+//
+//            document.onmouseup=function(){
+//                document.onmousemove=null;
+//                document.onmousedown=null;
+//            };
+//            return false;  //阻止默认事件,FFbug
+//        }
+//    }
+    //jQuery写法
+    $(function(){
+        var disX=0;
+        var disY=0;
+        $('#div1').mousedown(function(ev){
+            disX=ev.clientX-$(this).offset().left;
+            disY=ev.clientY-$(this).offset().top;
+            var oDiv1=document.getElementById('div1');
+            $(document).mousemove(function(ev){
+                var x=ev.clientX-disX;
+                var y=ev.clientY-disY;
+                if(x<20){   //限制范围
+                    x=0;
+                }
+                else if(x>$(window).width()-$('#div1').width()-20){
+                    x=$(window).width()-$('#div1').width();
+                }
+                if(y<20){
+                    y=0;
+                }
+                else if(y>$(window).height()-$('#div1').height()-20){
+                    y=$(window).height()-$('#div1').height();
+                }
+                $('#div1').css('left',x);
+                $('#div1').css('top',y);
+            });
+            $(document).mouseup(function(){
+               $(document).off();
+            });
+            return false;
+        });
+
+    })
+</script>
+</html>

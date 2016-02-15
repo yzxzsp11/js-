@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jqueryPlug</title>
+    <style>
+        div{
+            position: absolute;
+            width: 200px;
+            height:200px;
+            background-color: #00b3ee;
+        }
+    </style>
+</head>
+<body>
+<div>
+
+</div>
+</body>
+<script src="jquery-2.2.0.min.js"></script>
+<script>
+    $.extend({    //只能被$调用
+        aaa:function(){
+            alert('这是一个工具方法');
+        },
+        changeBgc:function($obj){
+            $obj.css('background-color','red');
+        }
+    });
+    $.fn.extend({   //可以被对象调用的插件
+        bbb:function(){
+            alert('这是一个对象方法');
+        },
+        drag:function(){
+            var disX=0;
+            var disY=0;
+            var _this=this;
+            this.mousedown(function(ev){
+                disX=ev.pageX-$(this).offset().left;
+                disY=ev.pageY-$(this).offset().right;
+                $(document).mousemove(function(){
+                    _this.css('top','disX');
+                    _this.css('left','disY');
+
+                });
+                $(document).mouseup(function(){
+                    $(this).off();
+                });
+                return false;
+            });
+
+        }
+    });
+    $(function(){
+        var $div=$('div');
+        $div.bbb();
+        $.aaa();
+        $.changeBgc($div);
+        $div.drag();
+    });
+</script>
+</html>

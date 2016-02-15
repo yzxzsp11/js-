@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布流</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding:0;
+    }
+    .box{
+        padding: 5px;
+        float: left;
+    }
+    .img {
+
+    }
+    #container{
+        position: relative;
+    }
+    .appendClass{
+        width: 250px;
+        height: 150px;
+        background-color: #f8e530;
+    }
+    div{
+        font-family: 宋体;
+        font-size: x-large;
+        color: #0D3349;
+        text-align: center;
+    }
+</style>
+<body>
+<div id="container">
+    <div class="box">
+        <div class="img" style="width: 250px;
+        height: 150px;
+        background-color: #00AA88;">
+        爱我你怕了吗</div>
+    </div>
+    <div class="box">
+        <div class="img" style=" width: 250px;
+        height: 300px;
+        background-color: #00CCFF;">来啊,打我啊</div>
+    </div>
+    <div class="box">
+        <div class="img" style="width: 250px;
+        height: 500px;
+        background-color: #ff6cf1;">大傻比</div>
+    </div>
+    <div class="box">
+        <div class="img" style=" width: 250px;
+        height:80px;
+        background-color: #b2dba1;">大坏蛋</div>
+    </div>
+    <div class="box">
+        <div class="img" style="width: 250px;
+        height: 200px;
+        background-color: #f5cef4;">死基佬</div>
+    </div>
+    <div class="box">
+        <div class="img" style=" width: 250px;
+        height: 300px;
+        background-color: #00CCFF;">no can no BB</div>
+    </div>
+    <div class="box">
+        <div class="img" style="width: 250px;
+        height: 500px;
+        background-color: #ff6cf1;">进逼</div>
+    </div>
+    <div class="box">
+        <div class="img1" style="width: 250px;
+        height: 150px;
+        background-color: #00AA88;">你行你上啊</div>
+    </div>
+    <div class="box">
+        <div class="img" style=" width: 250px;
+        height:80px;
+        background-color: #b2dba1;">因垂死听</div>
+    </div>
+    <div class="box">
+        <div class="img" style="width: 250px;
+        height: 200px;
+        background-color: #f5cef4;">阿哈哈哈</div>
+    </div>
+    <div class="box">
+        <div class="img" style="width: 250px;
+        height: 150px;
+        background-color: #00AA88;">活活慌慌呼呼</div>
+    </div>
+</div>
+</body>
+<script>
+    window.onload=function(){
+        fixImg('container','box');
+
+        var imgStyleHeight=[150,300,80,200,500];
+        var imgStyleColor=['#00AA88','#00CCFF','#b2dba1','#f5cef4','#ff6cf1'];
+        var imgStyleHtml=['you jump,i jump','岁月静好,妙香暖心','似乎很有趣','外星生物入侵啦'];
+        window.onscroll=function(){    //监测滚动条位置
+            var oParent=document.getElementById('container');
+            if(loadImg()){
+                for(var i=0;i<imgStyleHeight.length;i++){
+                    var oDiv1=document.createElement('div');
+                    oDiv1.className='box';
+                    oParent.appendChild(oDiv1);
+                    var oDiv2=document.createElement('div');
+                    oDiv2.className='img';
+//                    oDiv2.className='appendClass';
+                    oDiv2.style.cssText="width:250px;height:"+imgStyleHeight[i]+"px;background-color:"+imgStyleColor[i]+";";
+                    oDiv2.innerHTML=imgStyleHtml[i];
+                    oDiv1.appendChild(oDiv2);
+                }
+                fixImg('container','box');
+            }
+        }
+    };
+    function loadImg (){    //滚动后图片的加载
+        var oParent=document.getElementById('container');
+        var aImg=getChildren(oParent,'box');    //获得已经插入的图片
+        var lastImgTop=aImg[aImg.length-1].offsetTop;  //最后一张距离上方的高度
+        var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;//滚动高度
+        var clientTop=document.documentElement.clientHeight||document.body.clientHeight;  //当前窗口高度
+//        console.log(lastImgTop+'<'+scrollTop+'+'+clientTop);
+        if(lastImgTop<scrollTop+clientTop){      //滚动到最后一张图片顶部时
+            return true;      //可以开始加载图片
+        }
+        else{
+            return false;
+        }
+    }
+    function fixImg(parent,childName){   //使得每一行有固定个数图片,不随窗口大小而改变
+        var oParent=document.getElementById(parent);
+        var imgArr=getChildren(oParent,childName);
+//        console.log(imgArr);
+        var imgWidth=imgArr[0].offsetWidth;
+//        console.log(imgWidth);
+        var cols=Math.floor(document.documentElement.clientWidth/imgWidth); //计算图片列数
+//        console.log(cols);
+        //根据图片修改外层div为某固定宽度
+        oParent.style.cssText="width:"+cols*imgWidth+"px;margin:0 auto;";
+
+        //开始把图片按照瀑布流规则插入
+        var imgHeight=[];
+        for(var i=0;i<imgArr.length;i++){
+            if(i<cols){     //图片已经显示
+                imgHeight[i]=imgArr[i].offsetHeight;   //获得当前一行所有图片高度
+            }
+            else{
+                var minHeight=Math.min.apply(null,imgHeight);  //找到最小高度
+                var minIndex=getLocation(imgHeight,minHeight);
+                imgArr[i].style.position='absolute';
+                imgArr[i].style.top=minHeight+'px';    //插入在最小高度图片下面
+                imgArr[i].style.left=imgArr[minIndex].offsetLeft+'px';
+                //插入图片的那部分高度改变
+                imgHeight[minIndex]=imgHeight[minIndex]+imgArr[i].offsetHeight;
+            }
+        }
+    }
+
+    function getChildren(oParent,childName){   //获得图片个数
+        var imgArr=[];
+        var content=oParent.getElementsByTagName('*');
+        for(var i=0;i<content.length;i++){
+            if(content[i].className==childName){   //找到指定类名对元素
+                imgArr.push(content[i]);
+            }
+        }
+        return imgArr;   //返回存放所有图片对数组
+    }
+
+    function getLocation(aparent,oMinHeight){  //找到最小高度图片在数组对中对位置
+        for(var i=0;i<aparent.length;i++){
+//            console.log('imgHeight:'+aparent+' oMinHeight:'+oMinHeight);
+            if(aparent[i]==oMinHeight){
+//                console.log('i: '+i);
+                return i;
+            }
+            else{
+                console.log('not find');
+            }
+        }
+    }
+</script>
+</html>

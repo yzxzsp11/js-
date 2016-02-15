@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jqueryQQ列表下拉</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 宋体;
+        }
+
+        #drop {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            width: 200px;
+            background-color: #7bd1f5;
+            border-style: none solid none solid;
+            border-color: #5c6b77;
+            border-width: 1px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        ul li {
+            width: 200px;
+            border-style: none solid solid solid;
+            border-color: #5c6b77;
+            border-width: 1px;
+        }
+
+        .up {
+            display: none;
+        }
+
+        .dropH2 {
+            background-color: antiquewhite;
+        }
+
+        .dropUl {
+            display: block;
+        }
+
+        .selectedLi {
+            background-color: #7bd1f5;
+            color: white;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="drop">
+    <h2 style="border-top: 1px solid #5c6b77">&gt我的好友</h2>
+    <ul class="up">
+        <li>张三</li>
+        <li>张三</li>
+        <li>张三</li>
+        <li>张三</li>
+    </ul>
+    <h2>&gt企业好友</h2>
+    <ul class="up">
+        <li>张三</li>
+        <li>张三</li>
+        <li>张三</li>
+        <li>张三</li>
+    </ul>
+    <h2 style="border-bottom: 1px solid #5c6b77">&gt黑名单</h2>
+    <ul class="up">
+        <li>张三</li>
+        <li>张三</li>
+        <li>张三</li>
+        <li>张三</li>
+    </ul>
+</div>
+</body>
+<script src="jquery-2.2.0.min.js"></script>
+<script>
+//jquery写法
+    $(function(){
+        var arr = ['我的好友', '企业好友', '黑名单'];
+        var $H2=$('h2');
+        var $Ul=$('ul');
+        $H2.each(function(){
+            $(this).click(function(){
+                if ($(this).hasClass('dropH2')) {
+                    $(this).removeClass('dropH2').html('&gt' + arr[$(this).index() / 2]);
+                    $Ul.eq($(this).index()/2).removeClass('dropUl').addClass('up');
+                }
+                else {
+                    $(this).addClass('dropH2');    //改变当前被点击的部分样式
+//                alert($(this).index());
+                    $(this).html('&lt' + arr[$(this).index() / 2]);
+
+                    $Ul.eq($(this).index() / 2).addClass('dropUl'); //显示隐藏菜单
+
+                    var $Li = $('li');
+                    $Li.each(function () {
+                        $(this).click(function () {    //点击每一个li
+                            $Li.removeClass('selectedLi');
+                            $(this).addClass('selectedLi');
+                        });
+                    });
+                }
+
+            });
+        });
+    });
+</script>
+<!--<script>-->
+    <!--//js 写法-->
+    <!--window.onload = selectList;-->
+    <!--function selectList() {-->
+        <!--var aH2 = document.getElementsByTagName('h2');-->
+        <!--var aUl = document.getElementsByTagName('ul');-->
+        <!--var arr = ['我的好友', '企业好友', '黑名单'];-->
+
+        <!--for (var i = 0; i < aH2.length; i++) {-->
+            <!--aH2[i].index = i;            //给每个列表编号-->
+            <!--aH2[i].onclick = function () {-->
+<!--//                    alert('this click.index is:'+this.index);-->
+                <!--if (aH2[this.index].className == 'dropH2') {       //已经被点击过-->
+                    <!--aH2[this.index].className = '';-->
+                    <!--aH2[this.index].innerHTML = '&gt' + arr[this.index];-->
+                    <!--aUl[this.index].className = 'up'-->
+                <!--}-->
+                <!--else {                                            //未被点击过-->
+                    <!--for (var j = 0; j < aH2.length; j++) {-->
+                        <!--aH2[j].className = '';-->
+                        <!--aH2[j].innerHTML = '&gt' + arr[j];-->
+
+                    <!--}-->
+                    <!--for (var j = 0; j < aUl.length; j++) {-->
+                        <!--aUl[j].className = 'up';-->
+                    <!--}-->
+<!--//                        aH2[this.index].className = 'dropH2';-->
+<!--//                        aH2[this.index].innerHTML = '&lt' + arr[this.index];-->
+                    <!--this.className = 'dropH2';-->
+                    <!--this.innerHTML = '&lt' + arr[this.index];-->
+                    <!--// alert("h2处理完成");-->
+                    <!--aUl[this.index].className = 'dropUl';-->
+
+                <!--}-->
+            <!--}-->
+        <!--}-->
+        <!--var aLi = document.getElementsByTagName('li');-->
+        <!--for (var k = 0; k < aLi.length; k++) {            //下拉列表部分点击-->
+            <!--aLi[k].index = k;-->
+            <!--aLi[k].onclick = function () {-->
+<!--//                    alert('this click.index is:'+this.index);-->
+                <!--if (aLi[this.index].className == 'selectedLi') {-->
+                    <!--// alert('if');-->
+                    <!--aLi[this.index].className = '';-->
+                <!--}-->
+                <!--else {-->
+                    <!--// alert('else');-->
+                    <!--for (var j = 0; j < aLi.length; j++) {-->
+                        <!--aLi[j].className = '';-->
+                    <!--}-->
+<!--//                        aLi[this.index].className = 'selectedLi';-->
+                    <!--this.className = 'selectedLi';-->
+                <!--}-->
+            <!--}-->
+
+        <!--}-->
+    <!--}-->
+<!--</script>-->
+</html>

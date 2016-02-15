@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQ选项卡</title>
+    <style>
+        #div1{
+            display:none;
+            height: 100px;
+            width: 50px;
+            background-color: #d6e9c6;
+        }
+        #div2{
+            display:none;
+            height: 100px;
+            width: 50px;
+            background-color: #d6e9c6;
+        }
+        #div3{
+            display:none;
+            height: 100px;
+            width: 50px;
+            background-color: #d6e9c6;
+        }
+    </style>
+</head>
+<body>
+<div id="div">
+    <input type="button" value="选项卡1"/>
+    <input type="button" value="选项卡2"/>
+    <input type="button" value="选项卡3"/>
+
+    <div id="div1">
+        <p>div1</p>
+    </div>
+    <div id="div2">
+        <p>div2</p>
+    </div>
+    <div id="div3">
+        <p>div3</p>
+    </div>
+</div>
+</body>
+<script src="jquery-2.2.0.min.js"></script>
+<script>
+    //原生js版
+//    window.onload=function(){
+//        choose();
+//    };
+//    function choose(){
+//        var oDiv=document.getElementById('div');
+//        var oBtn=oDiv.getElementsByTagName('input');
+//        var oDiv1=document.getElementsByTagName('div');
+//        for(var i=0;i<oBtn.length;i++) {
+//            oBtn[i].index=i;
+//            oBtn[i].onclick = function () {
+//                for(var j=1;j<oDiv1.length;j++){
+//                    oDiv1[j].style.display='none';
+//                }
+//                oDiv1[this.index+1].style.display = 'block';
+//            };
+//        }
+//    }
+    //JQuery版
+    $(function(){
+        $('#div').find('input').click(function(){
+            $('#div').find('div').css('display','none');
+            $('#div').find('div').eq($(this).index()).css('display','block');
+        })
+    })
+</script>
+</html>

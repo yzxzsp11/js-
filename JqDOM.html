@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JqDom</title>
+</head>
+<body>
+<div>div</div>
+<span>span</span>
+</body>
+<script src="jquery-2.2.0.min.js"></script>
+<script>
+    $(function(){
+        //$('span').insertBefore($('div'));   //将span插入到div前面
+        //$('span').appendTo($('div'));// 添加到子节点最后
+//        $('span').prependTo($('div'));  //添加到子节点前面
+
+        //$('span').insertBefore($('div')); //span插入到div前面,顺序:span div
+        //$('span').before($('div'));   //span的前面是div   ,顺序:div,span
+            //  以上两种方法达成相同效果所操作多对象不同,以便于后续操作
+
+        $('div').on({       // 自定义事件
+            'click': function(){
+                alert('123');
+                $('div').off('click');  //取消事件
+            },
+            'mouseover':function(){
+                alert('456');
+                $('div').off('mouseover');
+            }
+        })
+    });
+
+</script>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <style>
+        #animater{
+            width: 150px;
+           background-color: #0aa9c1;
+           position: absolute;
+            top: 100px;
+        }
+    </style>
+    <script type="text/javascript" src="jquery-2.2.0.min.js"></script>
+    <script>
+        $(function(){
+            $('#animater').animate({
+                width:'300px',
+                height:'200px'
+            },10000,function(){
+                $('#animater').animate({
+                    left:'300px',
+                    top:'100px'
+                },10000).animate({
+                    opacity:'0.2'
+                },10000,function(){
+                    $('#animater').css('background-color','blue');
+                });
+            });
+            $('#button1').click(function(){
+                //默认参数是false,参数一:是否清空队列,参数二:是否直接到当前动画结束效果
+                $('#animater').stop();  //立即停止当前动画,不进入下一个
+            });
+            $('#button2').click(function(){
+                //第二个参数默认false
+                $('#animater').stop(true);   //停止动画,清空队列
+            });
+            $('#button3').click(function(){
+                $('#animater').stop(false,true);  //直接到达当前动画结束效果
+            });
+            $('#button4').click(function(){
+                $('#animater').stop(true,true);  //直接到达当前动画队列结束效果
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+<div id="animater">
+    stop()方法测试
+</div>
+<div id="button">
+    <input type="button" id="button1" value="stop()"/>
+    <input type="button" id="button2" value="stop(true)"/>
+    <input type="button" id="button3" value="stop(false,true)"/>
+    <input type="button" id="button4" value="stop(true,true)"/>
+
+</div>
+</body>
+</html>

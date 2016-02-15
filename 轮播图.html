@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播图</title>
+    <style>
+        #div1{
+            width: 500px;
+            height: 420px;
+            margin: 30px auto;
+            position: relative;
+        }
+        #div1 #left{
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            position:    absolute;
+            text-align: center;
+            line-height: 50px;
+            font-size: 30px;
+            top: 180px;
+            cursor: pointer;
+        }
+        #div1 #right{
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            position:    absolute;
+            text-align: center;
+            line-height: 50px;
+            font-size: 30px;
+            top: 180px;
+            left:498px;
+            cursor: pointer;
+        }
+        #ul1{
+            position: absolute;
+            left: 32%;
+            top:430px;
+            width: 800px;
+            height: 200px;
+            list-style: none;
+        }
+        #ul1 li{
+            width: 110px;
+            height:90px;
+            float: left;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #ul1 li .silence{
+            width: 50px;
+            height: 42px;
+        }
+        .active{
+            width: 100px;
+            height: 84px;
+        }
+    </style>
+</head>
+<body>
+<div id="div1">
+    <img src="lunBoTuPic/1.png"/>
+    <span id="left"><h2 style="display: inline;"><</h2></span>
+    <span id="right"><h2 style="display: inline;">></h2></span>
+</div>
+<ul id="ul1">
+    <li><img src="lunBoTuPic/1.png" class="active"/></li>
+    <li><img src="lunBoTuPic/2.png" class="silence"/></li>
+    <li><img src="lunBoTuPic/3.png" class="silence"/></li>
+    <li><img src="lunBoTuPic/4.png" class="silence"/></li>
+</ul>
+</body>
+<script src="jquery-2.2.0.min.js"></script>
+<script>
+    //js版
+//    window.onload=function(){
+//        var oDiv=document.getElementById('div1');
+//        var oLeft=document.getElementById('left');
+//        var oRight=document.getElementById('right');
+//        var oDivImg=oDiv.getElementsByTagName('img')[0];
+//        var oUl=document.getElementById('ul1');
+//        var aLi=oUl.getElementsByTagName('li');
+//        var aLiImg=oUl.getElementsByTagName('img');    //下方小图
+//
+//        var DivImgNum=aLi.length;  //图片总个数
+//        var num=oDivImg.src.split('.')[0][oDivImg.src.split('.')[0].length-1];  //当前图片编号
+//        oLeft.onclick=function(){   //向左轮播
+//            if (num - 1 == 0) {
+//                num=DivImgNum;
+//                oDivImg.src = "lunBoTuPic/" + num + ".png";
+//            }
+//            else{
+//                num--;
+//                oDivImg.src = "lunBoTuPic/" + num + ".png";
+//            }
+//            for(var i=0;i<aLiImg.length;i++){
+//                aLiImg[i].className='silence';
+//            }
+//            aLiImg[num-1].className='active';
+//        };
+//        oRight.onclick=function(){  //向右轮播
+//            if (num + 1 ==DivImgNum+1) {
+//                num=1;
+//                oDivImg.src = "lunBoTuPic/" + num + ".png";
+//            }
+//            else{
+//                num++;
+//                oDivImg.src = "lunBoTuPic/" + num + ".png";
+//            }
+//            for(var i=0;i<aLiImg.length;i++){
+//                aLiImg[i].className='silence';
+//            }
+//            aLiImg[num-1].className='active';
+//        };
+//        for(var i=0;i<aLiImg.length;i++){   //小图部分
+//            aLiImg[i].index=i;
+//            aLiImg[i].onmousemove=function(){   //下方小图被选中
+//                for(var j=0;j<aLiImg.length;j++){
+//                    aLiImg[j].className='silence';
+//                }
+//                this.className='active';
+//                num=this.index+1;
+//                oDivImg.src = "lunBoTuPic/" + num + ".png";
+//
+//            };
+//        }
+//    };
+
+    //jquery版
+    $(function(){
+        var $left=$('#left');
+        var $right=$('#right');
+        var $divImg=$('#div1>img');   //大图
+        var $li=$('#ul1 li');   //下方小li
+        var imgNum=$li.length;  //图片总数
+        var $liImg=$('#ul1 img');   //小图
+        var num=$divImg[0].src.split('.')[0][$divImg[0].src.split('.')[0].length-1];
+
+        $left.click(function(){
+//            alert(imgNum);
+            if(num-1==0){
+                num=imgNum;
+                $divImg.attr('src',"lunBoTuPic/" + num + ".png");
+            }
+            else{
+                num--;
+                $divImg.attr('src',"lunBoTuPic/" + num + ".png");
+            }
+            $liImg.attr('class','silence');    //设置小图样式
+            $liImg.eq(num-1).attr('class','active');
+        });
+
+        $right.click(function(){
+//            alert(imgNum);
+            if(num==imgNum){
+                num=1;
+                $divImg.attr('src',"lunBoTuPic/" + num + ".png");
+            }
+            else{
+                num++;
+                $divImg.attr('src',"lunBoTuPic/" + num + ".png");
+            }
+            $liImg.attr('class','silence');
+            $liImg.eq(num-1).attr('class','active');
+        });
+
+        $liImg.mouseover(function(){
+//            console.log($(this).closest('li').index());
+            $liImg.attr('class','silence');
+            num=$(this).closest('li').index();
+            $liImg.eq(num).attr('class','active');
+            num+=1;    //与图片数字对应
+            $divImg.attr('src',"lunBoTuPic/" + num + ".png");
+        });
+    });
+
+</script>
+</html>
